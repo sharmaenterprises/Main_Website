@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================== */
+        /* GENERAL & ROOT STYLES    */
+        /* ======================== */
+        :root {
+            --primary-color: #007BFF; /* A vibrant blue */
+            --dark-bg: #121212;
+            --card-bg: #1E1E1E;
+            --text-primary: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --border-color: #2c2c2c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 {
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.5rem; text-align: center; }
+        p { color: var(--text-secondary); }
+
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* ======================== */
+        /* HEADER & NAVIGATION      */
+        /* ======================== */
+        .header {
+            background-color: transparent;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.4s ease;
+        }
+
+        .header.scrolled {
+            background-color: rgba(30, 30, 30, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: flex-end; /* Aligns items to the right */
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* ======================== */
+        /* HERO SECTION             */
+        /* ======================== */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://i.pinimg.com/736x/53/7b/cb/537bcb4ca6ed16c517ce1cff107ef8d6.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat; 
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ======================== */
+        /* INTRODUCTION SECTION     */
+        /* (Now the Quote Section)  */
+        /* ======================== */
+        .intro-section {
+            padding: 5rem 2rem;
+            text-align: center; 
+        }
+
+        .intro-container {
+            max-width: 900px; 
+            margin: 0 auto;
+        }
+
+        .intro-text h2 {
+            font-size: 2.8rem;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        /* ======================== */
+        /* SERVICES SECTION         */
+        /* ======================== */
+        .services-section {
+            background-color: var(--dark-bg);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .service-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .icon-placeholder {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ======================== */
+        /* CALL-TO-ACTION BLOCK     */
+        /* ======================== */
+        .cta-block {
+            background-color: var(--card-bg);
+            text-align: center;
+        }
+
+        /* ======================== */
+        /* FOOTER                   */
+        /* ======================== */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* ======================== */
+        /* RESPONSIVE DESIGN        */
+        /* ======================== */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            section { padding: 3rem 1rem; }
+                        
+            .intro-container {
+                text-align: center;
+            }
+            .intro-text h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dash3.html" class="nav-link">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Reliable Maintenance & Renovation Services</h1>
+                <p>Specializing in regular maintenance, structural repairs, and complete renovation for government and public-sector structures.</p>
+                <a href="dash3.html#contact-us" class="cta-button">Schedule an Assessment</a>
+            </div>
+        </section>
+
+        <section class="intro-section">
+            <div class="intro-container">
+                <div class="intro-text">
+                    <h2>"Maintenance is the art of preserving value and ensuring longevity."</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-section">
+            <h2>Our Maintenance Capabilities</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="icon-placeholder">🔍</div>
+                    <h3>Structural Audits & Reports</h3>
+                    <p>Conducting detailed inspections to assess structural health and identify potential issues.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-placeholder">🏛️</div>
+                    <h3>Renovation & Modernization</h3>
+                    <p>Upgrading and renovating existing structures to meet modern standards and codes.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-placeholder">💧</div>
+                    <h3>Waterproofing & Repairs</h3>
+                    <p>Providing robust solutions for leakage, seepage, and concrete damage to extend building life.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon-placeholder">🛡️</div>
+                    <h3>Preventive Care Programs</h3>
+                    <p>Designing and implementing scheduled maintenance plans to prevent future problems.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-block">
+            <h2>Preserve Your Assets for the Future</h2>
+            <p>Our maintenance experts are ready to ensure the safety, integrity, and value of your structures.</p>
+            <a href="dash3.html#contact-us" class="cta-button">Request a Maintenance Plan</a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 ConstructCo. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('.header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

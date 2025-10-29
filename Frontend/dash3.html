@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sharma Enterprises | Construction & Structure Design</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height:1.6; transition: background 0.3s, color 0.3s; overflow-x:hidden; }
+a { text-decoration:none; }
+
+/* THEME VARIABLES */
+:root {
+  --bg-primary:#f8f9fa; 
+  --bg-secondary:#ffffff;
+  --text-primary:#1a1a2e; 
+  --text-secondary:#4a5568;
+  --accent-color: #2563eb; 
+  --shadow: rgba(37,99,235,0.15);
+  --card-bg-dark: rgba(0, 0, 0, 0.02); 
+  --card-border-dark: rgba(0, 0, 0, 0.1);
+}
+[data-theme="dark"] {
+  --bg-primary:#0a0a0a; 
+  --bg-secondary:#1a1a1a; 
+  --text-primary:#f1f5f9; 
+  --text-secondary:#cbd5e1; 
+  --shadow: rgba(0,0,0,0.6);
+  --card-bg-dark: rgba(255, 255, 255, 0.05);
+  --card-border-dark: rgba(255, 255, 255, 0.1);
+}
+body { background: var(--bg-primary); color: var(--text-primary); }
+
+/* NAVIGATION */
+nav { 
+  display:flex; justify-content:space-between;
+  align-items: center;
+  position: sticky; top:0; z-index:100; 
+  box-shadow:0 2px 10px var(--shadow); 
+  backdrop-filter: blur(10px); 
+  background: rgba(10, 10, 10, 0.95);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+  padding: 0 40px;
+}
+[data-theme="light"] nav {
+  background: rgba(255,255,255,0.95);
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+
+/* NAVIGATION LINKS CONTAINER */
+nav ul { display:flex; flex-wrap:wrap; list-style:none; align-items:center; }
+nav li { margin:0; }
+nav a { padding:1rem 1.2rem; font-weight:600; color:var(--text-primary); position:relative; transition:0.3s; display:block; }
+nav a::after { content:''; position:absolute; bottom:0; left:50%; width:0; height:3px; background:var(--accent-color); transition:0.3s; transform:translateX(-50%); }
+nav a:hover::after, nav a.active::after { width:80%; }
+nav a:hover { color: var(--accent-color); }
+
+/* LOGO STYLING */
+nav .logo {
+  /* height: 80px; 
+  width: auto; */
+  object-fit: contain;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+nav .logo:hover {
+  transform: scale(1.05);
+}
+
+/* Center the links within the navigation bar */
+.nav-center-container {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)), 
+  url('https://i.pinimg.com/1200x/1b/07/fe/1b07fe95ef5feeefb6511f46d8114db8.jpg') no-repeat center/cover;
+  height: 100vh;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  padding:0 20px;
+  overflow:hidden;
+}
+header div { color:white; z-index:1; max-width:900px; }
+header h1 { font-size:4.5rem; margin-bottom:1.5rem; font-weight:900; text-shadow:0 4px 10px rgba(0,0,0,0.8); }
+header p { font-size:1.5rem; opacity:0.95; margin-bottom:1rem; text-shadow:0 2px 5px rgba(0,0,0,0.8); }
+
+/* CTA BUTTONS */
+.cta-buttons { display:flex; gap:20px; justify-content:center; margin-top:40px; flex-wrap:wrap; }
+.cta-btn {
+  padding:18px 45px; border-radius:50px; font-weight:700; font-size:1.1rem; cursor:pointer;
+  border:3px solid white; background:transparent; color:white; transition:0.4s; position:relative; overflow:hidden;
+}
+.cta-btn.primary { background:var(--accent-color); border-color:var(--accent-color); }
+.cta-btn:hover { transform:translateY(-5px) scale(1.05); box-shadow:0 10px 30px rgba(37,99,235,0.5); }
+
+/* STATS */
+.stats-section { background: var(--bg-secondary); padding:80px 20px; }
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:50px; max-width:1200px; margin:0 auto; }
+.stat-item { text-align:center; transition:transform 0.3s ease; padding:20px; }
+.stat-item:hover { transform:translateY(-10px); }
+.stat-number { font-size:4rem; font-weight:900; color:var(--accent-color); margin-bottom:15px; }
+.stat-label { font-size:1.1rem; color:var(--text-secondary); text-transform:uppercase; letter-spacing:2px; font-weight:600; }
+
+/* CONTAINER */
+.container { max-width:1200px; margin:0 auto; padding:80px 20px; }
+h2 { font-size:3rem; margin-bottom:3rem; text-align:center; font-weight:800; position:relative; }
+h2::after {
+  content:''; position:absolute; bottom:-15px; left:50%; transform:translateX(-50%);
+  width:120px; height:4px; background:var(--accent-color); border-radius:3px;
+}
+
+/* GRID CARDS */
+.grid { display:grid; gap:40px; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); margin-top:50px; }
+.service-card, .team-card {
+  background: var(--card-bg-dark); backdrop-filter: blur(20px);
+  border:2px solid var(--card-border-dark); border-radius:25px; padding:50px 35px;
+  text-align:center; box-shadow:0 10px 30px var(--shadow);
+  transition: all 0.4s ease; position:relative; overflow:hidden;
+  min-height:400px; cursor:pointer;
+}
+.service-card:hover, .team-card:hover {
+  transform:translateY(-10px) scale(1.03);
+  border-color:var(--accent-color);
+  box-shadow:0 20px 50px rgba(37,99,235,0.3);
+}
+.service-link { display: block; }
+.icon { font-size:4rem; margin-bottom:2rem; animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
+
+/* CONTACT */
+.contact-form {
+  background: var(--card-bg-dark); backdrop-filter: blur(20px);
+  padding:60px; border-radius:30px; max-width:750px; margin:0 auto;
+  border:2px solid var(--card-border-dark); box-shadow:0 20px 60px var(--shadow);
+}
+.form-group { margin-bottom:30px; }
+label { display:block; font-weight:700; margin-bottom:10px; color:var(--text-primary); }
+input, textarea, select {
+  width:100%; padding:18px; border-radius:15px; border:2px solid var(--card-border-dark);
+  background:var(--bg-secondary); color:var(--text-primary); font-size:1.05rem; transition:0.3s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color:var(--accent-color); box-shadow:0 0 0 4px rgba(37,99,235,0.2); outline: none;
+}
+
+/* BUTTON */
+button {
+  background:var(--accent-color); color:white; padding:20px 60px; border:none;
+  border-radius:50px; font-size:1.3rem; font-weight:800; cursor:pointer;
+  transition:0.4s; text-transform:uppercase; letter-spacing:1px;
+}
+button:hover { transform:scale(1.08) translateY(-3px); box-shadow:0 15px 40px rgba(37,99,235,0.5); }
+
+/* FOOTER */
+footer {
+  background: var(--bg-secondary); color:var(--text-primary);
+  text-align:center; padding:60px 20px; border-top:1px solid var(--card-border-dark);
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+  padding:8px 15px; border-radius:20px; cursor:pointer;
+  display:flex; align-items:center; gap:8px; font-weight:600; font-size:0.85rem;
+  background:var(--bg-secondary); border:2px solid var(--card-border-dark);
+  transition: all 0.3s ease;
+}
+.theme-toggle:hover { border-color:var(--accent-color); transform:scale(1.05); }
+
+/* SCROLL PROGRESS */
+.scroll-progress {
+  position:fixed; top:0; left:0; width:0%; height:4px;
+  background:var(--accent-color); z-index:1000;
+  transition:width 0.1s ease; box-shadow:0 0 10px var(--accent-color);
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  header h1{ font-size:2.5rem; }
+  header p{ font-size:1.1rem; }
+  h2{ font-size:2.2rem; }
+  .service-card, .team-card { min-height:350px; padding:40px 25px; }
+  nav { flex-wrap: wrap; padding: 15px 20px; }
+  nav .logo { height: 40px; }
+  nav ul { margin-top: 10px; justify-content: center; width: 100%; }
+  .nav-center-container { flex-grow: 0; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav>
+<img src="logo1.png" 
+     alt="Sharma Enterprises Logo" 
+     class="logo" 
+     style="transform: scale(1.75); transform-origin: center; height: 120px; width: auto;">
+  
+  <div class="nav-center-container">
+    <ul>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#teams">Teams</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+  
+  <div class="theme-toggle" id="themeToggle"><span id="themeIcon">☀️</span><span id="themeText">Light</span></div>
+</nav>
+
+<header id="home">
+  <div>
+    <h1>Construction & Structure Design</h1>
+    <p>Professional Teams for Handling Projects</p>
+    
+    <div class="cta-buttons">
+      <a href="#services" class="cta-btn primary">Explore Services</a>
+      <a href="#contact" class="cta-btn">Get a Quote</a>
+    </div>
+  </div>
+</header>
+
+<!-- Stats -->
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-number" data-target="150">0</div><div class="stat-label">Projects Completed</div></div>
+    <div class="stat-item"><div class="stat-number" data-target="50">0</div><div class="stat-label">Active Projects</div></div>
+    <div class="stat-item"><div class="stat-number" data-target="98">0</div><div class="stat-label">Client Satisfaction</div></div>
+    <div class="stat-item"><div class="stat-number" data-target="25">0</div><div class="stat-label">Years Experience</div></div>
+  </div>
+</div>
+
+<!-- Services -->
+<div class="container" id="services">
+  <h2>Our Services</h2>
+  <div class="grid">
+    <a href="structuredesign.html" class="service-link">
+      <div class="service-card">
+        <div class="icon">🏗️</div>
+        <h3>Structure Design</h3>
+        <p>Complete structural design for residential, commercial & industrial buildings with cutting-edge technology.</p>
+      </div>
+    </a>
+    <a href="constructionmgmt.html" class="service-link">
+      <div class="service-card">
+        <div class="icon">🧱</div>
+        <h3>Construction Management</h3>
+        <p>Comprehensive construction schemes and full project management support from start to finish.</p>
+      </div>
+    </a>
+    <a href="maintainence.html" class="service-link">
+      <div class="service-card">
+        <div class="icon">🔧</div>
+        <h3>Maintenance Services</h3>
+        <p>Managing every detail from groundbreaking to final handover with precision and care.</p>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- Teams -->
+<section id="teams" class="container">
+  <h2>Our Expert Teams</h2>
+  <div class="grid">
+    <div class="team-card"><div class="icon">👩‍💼</div><h3>Manager</h3><p>shivam</p></div>
+    <div class="team-card"><div class="icon">🏗️</div><h3>Project Manager</h3><p>Rahul Sharma</p></div>
+    <div class="team-card"><div class="icon">🏛️</div><h3>Head Engineer</h3><p>Sunil Kumar</p></div>
+    <div class="team-card"><div class="icon">👷</div><h3>Engineer</h3><p>Shivam Sharma</p></div>
+    <div class="team-card"><div class="icon">🔧</div><h3>Technical Engineer</h3><p>shivam Gupta</p></div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="container">
+  <h2>Contact Us</h2>
+  <div class="contact-form">
+    <form id="contactForm">
+      <div class="form-group">
+          <label>Name / नाम:</label>
+          <input type="text" required name="name" placeholder="Enter your name">
+      </div>
+      <div class="form-group">
+          <label>Email:</label>
+          <input type="email" required name="email" placeholder="your.email@example.com">
+      </div>
+      <div class="form-group">
+          <label>Phone / फ़ोन:</label>
+          <input type="tel" required name="phone" placeholder="+91-XXXXXXXXXX">
+      </div>
+      <div class="form-group">
+          <label>Project Type / परियोजना प्रकार:</label>
+          <select required name="projectType">
+            <option value="">Select Project Type</option>
+            <option>Structure Design</option>
+            <option>Construction Residential Building</option>
+            <option>Construction Commercial Building</option>
+            <option>Wholesale Cement</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label>Message / संदेश:</label>
+          <textarea rows="5" name="message" placeholder="Write your query"></textarea>
+      </div>
+      <button type="submit">Submit / भेजें</button>
+    </form>
+  </div>
+</section>
+
+<footer>&copy; 2025 Structure Design & Construction Teams. All Rights Reserved.</footer>
+
+<script>
+// THEME TOGGLE
+const themeToggle=document.getElementById('themeToggle'),themeIcon=document.getElementById('themeIcon'),themeText=document.getElementById('themeText'),html=document.documentElement;
+const savedTheme=localStorage.getItem('theme')||'dark';
+html.setAttribute('data-theme',savedTheme);
+function updateThemeUI(t){themeIcon.textContent=t==='dark'?'☀️':'🌙';themeText.textContent=t==='dark'?'Light':'Dark';}
+updateThemeUI(savedTheme);
+themeToggle.onclick=()=>{const t=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',t);localStorage.setItem('theme',t);updateThemeUI(t);};
+
+// SCROLL SMOOTH
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.onclick=e=>{
+  const target=document.querySelector(a.getAttribute('href'));if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
+});
+
+// ACTIVE NAV
+const sections=document.querySelectorAll('section, header'),navLinks=document.querySelectorAll('nav a');
+window.addEventListener('scroll',()=>{
+  let current='home';
+  sections.forEach(sec=>{if(scrollY>=sec.offsetTop-150){current=sec.id||'home';}});
+  navLinks.forEach(l=>{l.classList.toggle('active',l.getAttribute('href')==='#'+current);});
+});
+
+// SCROLL PROGRESS
+window.addEventListener('scroll',()=>{
+  const scrollProgress=document.getElementById('scrollProgress');
+  const scrolled=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight))*100;
+  scrollProgress.style.width=scrolled+'%';
+});
+
+// STATS COUNTER
+let done=false;
+const obs=new IntersectionObserver(e=>{
+  e.forEach(ent=>{
+    if(ent.isIntersecting&&!done){
+      done=true;
+      document.querySelectorAll('.stat-number').forEach(c=>{
+        const target=+c.dataset.target;let count=0;
+        const step=target/100;
+        const int=setInterval(()=>{
+          count+=step;
+          if(count<target)c.textContent=Math.floor(count);
+          else{c.textContent=target+(target===98?'%':'+');clearInterval(int);}
+        },20);
+      });
+    }
+  });
+},{threshold:0.3});
+obs.observe(document.querySelector('.stats-section'));
+
+// FORM SUBMIT
+document.getElementById('contactForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  const formData = new FormData(e.target);
+  
+  try {
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    
+    const response = await fetch('http://localhost:5000/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(Object.fromEntries(formData))
+    });
+    
+    if (!response.ok) throw new Error('Submission failed');
+    
+    btn.textContent = '✓ Sent!';
+    e.target.reset();
+  } catch (error) {
+    btn.textContent = '❌ Failed';
+    console.error('Submission error:', error);
+  } finally {
+    setTimeout(() => {
+      btn.textContent = 'Submit / भेजें';
+      btn.disabled = false;
+    }, 2000);
+  }
+});
+
+// RIPPLE EFFECT ON CLICK
+document.querySelectorAll('.service-card, .team-card').forEach(card=>{
+  card.addEventListener('click',e=>{
+    const r=document.createElement('span');const rect=card.getBoundingClientRect();
+    r.style.position='absolute';r.style.left=(e.clientX-rect.left)+'px';r.style.top=(e.clientY-rect.top)+'px';
+    r.style.width=r.style.height='10px';r.style.background='rgba(37,99,235,0.5)';r.style.borderRadius='50%';
+    r.style.transform='translate(-50%,-50%) scale(0)';r.style.pointerEvents='none';r.style.transition='transform 0.6s ease, opacity 0.6s';
+    card.appendChild(r);
+    requestAnimationFrame(()=>{r.style.transform='translate(-50%,-50%) scale(20)';r.style.opacity='0';});
+    setTimeout(()=>r.remove(),600);
+  });
+});
+</script>
+
+</body>
+</html>

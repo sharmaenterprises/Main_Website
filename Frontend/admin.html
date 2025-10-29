@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Contact Submissions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .loading-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #555;
+            padding: 50px;
+        }
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+            table-layout: fixed; /* Ensures fixed column width */
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            word-wrap: break-word; /* Allows long content to wrap */
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        /* Responsive Table Scroll */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Contact Submissions Dashboard</h1>
+
+    <div id="data-status" class="loading-message">Loading data...</div>
+
+    <div class="table-wrapper">
+        <table id="submissions-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">ID</th>
+                    <th style="width: 15%;">Name</th>
+                    <th style="width: 15%;">Email</th>
+                    <th style="width: 10%;">Phone</th>
+                    <th style="width: 15%;">Project Type</th>
+                    <th style="width: 30%;">Message</th>
+                    <th style="width: 10%;">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // The URL for the GET route we just created in contactRoutes.js
+    const API_URL = 'http://localhost:5000/api/contact'; 
+
+    async function fetchSubmissions() {
+        const statusDiv = document.getElementById('data-status');
+        const tableBody = document.getElementById('submissions-table').querySelector('tbody');
+        tableBody.innerHTML = ''; // Clear existing data
+
+        try {
+            const response = await fetch(API_URL);
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                const submissions = result.data;
+                statusDiv.style.display = 'none';
+
+                if (submissions.length === 0) {
+                    statusDiv.innerHTML = 'No contact submissions found yet.';
+                    statusDiv.style.display = 'block';
+                    return;
+                }
+
+                submissions.forEach(sub => {
+                    const row = tableBody.insertRow();
+                    
+                    // Format the date for cleaner display
+                    const date = new Date(sub.submission_date).toLocaleDateString('en-IN', {
+                        year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                    });
+
+                    // Insert cells (td) in the order defined in the <thead>
+                    row.insertCell(0).textContent = sub.id;
+                    row.insertCell(1).textContent = sub.name;
+                    row.insertCell(2).textContent = sub.email;
+                    row.insertCell(3).textContent = sub.phone;
+                    row.insertCell(4).textContent = sub.project_type;
+                    row.insertCell(5).textContent = sub.message.substring(0, 150) + (sub.message.length > 150 ? '...' : ''); // Truncate long messages
+                    row.insertCell(6).textContent = date;
+                });
+
+            } else {
+                statusDiv.innerHTML = `Error fetching data: ${result.msg || 'Server denied request.'}`;
+                statusDiv.style.color = 'red';
+                statusDiv.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            statusDiv.innerHTML = `Network error. Is the backend server running on port 5000?`;
+            statusDiv.style.color = 'red';
+            statusDiv.style.display = 'block';
+        }
+    }
+
+    // Call the function when the page loads
+    window.onload = fetchSubmissions;
+</script>
+
+</body>
+</html>
