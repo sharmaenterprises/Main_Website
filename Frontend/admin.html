@@ -27,31 +27,65 @@
             margin-bottom: 25px;
             text-align: center;
         }
-        .loading-message {
+        .status-message {
             text-align: center;
             font-size: 1.2rem;
             color: #555;
-            padding: 50px;
+            padding: 50px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
         }
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 4px solid rgba(0, 123, 255, 0.2);
+            border-left-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Table Wrapper */
+        .table-wrapper {
+            /* This is the key: it allows horizontal scrolling on small screens */
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
         /* Table Styling */
         table {
             width: 100%;
+            /* Set a minimum width to ensure the table doesn't get too compressed */
+            min-width: 900px; 
             border-collapse: collapse;
             margin-top: 20px;
             font-size: 0.9em;
-            table-layout: fixed; /* Ensures fixed column width */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        table.loaded {
+            opacity: 1;
         }
         th, td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
-            word-wrap: break-word; /* Allows long content to wrap */
+             /* This is the fix: prevents text from wrapping into vertical lines */
+            white-space: nowrap;
         }
         th {
             background-color: #007bff;
             color: white;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            position: sticky; /* Makes header stick during vertical scroll */
+            top: 0;
+            z-index: 1;
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -59,12 +93,16 @@
         tr:hover {
             background-color: #f1f1f1;
         }
-        /* Responsive Table Scroll */
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
+
+        /* Set specific column widths for better layout control */
+        .col-id { width: 5%; }
+        .col-name { width: 15%; }
+        .col-email { width: 20%; }
+        .col-phone { width: 10%; }
+        .col-project { width: 15%; }
+        .col-message { width: 25%; }
+        .col-date { width: 10%; }
+
     </style>
 </head>
 <body>
@@ -72,19 +110,22 @@
 <div class="container">
     <h1>Contact Submissions Dashboard</h1>
 
-    <div id="data-status" class="loading-message">Loading data...</div>
+    <div id="data-status" class="status-message">
+        <div class="spinner"></div>
+        <span>Loading data...</span>
+    </div>
 
     <div class="table-wrapper">
         <table id="submissions-table">
             <thead>
                 <tr>
-                    <th style="width: 5%;">ID</th>
-                    <th style="width: 15%;">Name</th>
-                    <th style="width: 15%;">Email</th>
-                    <th style="width: 10%;">Phone</th>
-                    <th style="width: 15%;">Project Type</th>
-                    <th style="width: 30%;">Message</th>
-                    <th style="width: 10%;">Date</th>
+                    <th class="col-id">ID</th>
+                    <th class="col-name">Name</th>
+                    <th class="col-email">Email</th>
+                    <th class="col-phone">Phone</th>
+                    <th class="col-project">Project Type</th>
+                    <th class="col-message">Message</th>
+                    <th class="col-date">Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,13 +135,13 @@
 </div>
 
 <script>
-    // The URL for the GET route we just created in contactRoutes.js
     const API_URL = 'https://sharma-ent-backend.onrender.com/api/contact'; 
 
     async function fetchSubmissions() {
         const statusDiv = document.getElementById('data-status');
-        const tableBody = document.getElementById('submissions-table').querySelector('tbody');
-        tableBody.innerHTML = ''; // Clear existing data
+        const table = document.getElementById('submissions-table');
+        const tableBody = table.querySelector('tbody');
+        tableBody.innerHTML = ''; 
 
         try {
             const response = await fetch(API_URL);
@@ -108,46 +149,46 @@
 
             if (response.ok && result.success) {
                 const submissions = result.data;
-                statusDiv.style.display = 'none';
-
+                
                 if (submissions.length === 0) {
                     statusDiv.innerHTML = 'No contact submissions found yet.';
-                    statusDiv.style.display = 'block';
-                    return;
+                } else {
+                    statusDiv.style.display = 'none'; 
+                    table.classList.add('loaded'); 
                 }
 
                 submissions.forEach(sub => {
                     const row = tableBody.insertRow();
                     
-                    // Format the date for cleaner display
                     const date = new Date(sub.submission_date).toLocaleDateString('en-IN', {
                         year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
                     });
 
-                    // Insert cells (td) in the order defined in the <thead>
                     row.insertCell(0).textContent = sub.id;
                     row.insertCell(1).textContent = sub.name;
                     row.insertCell(2).textContent = sub.email;
                     row.insertCell(3).textContent = sub.phone;
                     row.insertCell(4).textContent = sub.project_type;
-                    row.insertCell(5).textContent = sub.message.substring(0, 150) + (sub.message.length > 150 ? '...' : ''); // Truncate long messages
+                    // For the message, we allow it to wrap to avoid extreme horizontal scroll
+                    const messageCell = row.insertCell(5);
+                    messageCell.textContent = sub.message;
+                    messageCell.style.whiteSpace = 'normal'; // Override nowrap for this cell only
+                    messageCell.style.wordBreak = 'break-word';
+
                     row.insertCell(6).textContent = date;
                 });
 
             } else {
                 statusDiv.innerHTML = `Error fetching data: ${result.msg || 'Server denied request.'}`;
                 statusDiv.style.color = 'red';
-                statusDiv.style.display = 'block';
             }
         } catch (error) {
             console.error('Fetch error:', error);
-            statusDiv.innerHTML = `Network error. Is the backend server running on port 5000?`;
+            statusDiv.innerHTML = `Network error. Please check your connection and if the backend server is running.`;
             statusDiv.style.color = 'red';
-            statusDiv.style.display = 'block';
         }
     }
 
-    // Call the function when the page loads
     window.onload = fetchSubmissions;
 </script>
 
